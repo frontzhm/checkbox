@@ -1,4 +1,4 @@
-<!-- checkboxItem.vue -->
+<!-- checkboxBoolean.vue -->
 <template lang="pug">
 div.checkbox-box
   div.checkbox-content-box(@click='$refs.input.click()')
@@ -20,23 +20,15 @@ div.checkbox-box
  组件逻辑
  - 需要传入checked，value属性，item以项目传
  - 将原始的input隐藏，通过点击内容区触发input的click事件，从而达到控制其change事件
- - change事件会改变元素的checked属性，再向父组件派发事件，父组件根据传递的值更新组件的checked
- - 组件的checked再决定显示选中或者不选中的图标
- - 特别注意，表单元素本身的checked属性变化和组件的checked属性不一样，别弄混淆。希望两者关联，是需要做处理的！
- - 这里为了方便父组件使用v-model，将model设置为change事件和checked，官网文档https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
+ - change事件会改变元素的checked属性，再向父组件派发事件，父组件根据传递的值更新自己的checked，而更新后的值又会再影响这个组件的checked，形成闭环。
+ - 这里为了方便父组件使用v-model，将model设置为change事件和checked
+ 官网文档 https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
 
+ 使用方法
+  checkbox-boolean(v-model='checked' :item='item')
 
-使用的时候如果只需要checked的话
-checkbox-item(:item='item' v-model='item.checked')
-
-使用的时候，当然可以加value和change事件
-checkbox-item(:item='item' :checked='item.checked' :value='item.code' @change='setChecked')
-
-methods: {
-  setChecked(checked, item, event) {
-    console.log(checked, item, event)
-  }
-}
+ 加上value和change事件也是没问题的
+    checkbox-boolean(v-model='checked' :item='item' :value='item.code' @change='handleChange')
  */
 export default {
   name: "checkbox-boolean",
