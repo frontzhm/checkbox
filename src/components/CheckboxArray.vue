@@ -5,10 +5,12 @@ div.checkbox-box
     div.icon-box
       img.icon(alt='' :src='curChecked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
     div.content
-      //- 这里可以灵活改变
-      div.avatar-box
-        img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
-      .name {{item.name}}
+      //- slot可以自定义后面的内容
+      slot
+        //- 这里可以灵活改变
+        div.avatar-box
+          img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
+        .name {{item.name}}
   //- 原始input隐藏，这里的value看情况使用，可以不传，change是将选择事件抛出去，让父组件知晓
   input(ref='input' hidden type='checkbox' :checked='curChecked' :value='value' @change='changeInput($event)')
 
@@ -41,9 +43,8 @@ export default {
       }
     },
     value: {
-      type: [Boolean, String, Number],
       default() {
-        return "";
+        return this.item;
       }
     }
   },
