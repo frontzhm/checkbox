@@ -11,7 +11,7 @@ div.checkbox-box
         img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
       .name {{item.name}}
   //- 原始input隐藏，这里的value看情况使用，可以不传，change是将选择事件抛出去，让父组件知晓
-  input(ref='input' hidden type='checkbox' :checked='checked' :value='value' @change='changeInput(item,$event)')
+  input(ref='input' hidden type='checkbox' :checked='checked' :value='value' @change='changeInput($event)')
 
 </template>
 <script>
@@ -67,10 +67,10 @@ export default {
   },
 
   methods: {
-    changeInput(item, $event) {
+    changeInput($event) {
       // 第一项就将是否选中扔出去，这里注意，扔出去之后，父组件用v-model的话，父组件的值会自动变化
       // v-model是个语法糖，本质上相当于父组件 checkbox-item(:checked='checked' @change='checked=$event')
-      this.$emit("change", $event.target.checked, item, $event);
+      this.$emit("change", $event.target.checked, $event);
     }
   }
 };

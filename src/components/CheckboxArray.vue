@@ -10,7 +10,7 @@ div.checkbox-box
         img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
       .name {{item.name}}
   //- 原始input隐藏，这里的value看情况使用，可以不传，change是将选择事件抛出去，让父组件知晓
-  input(ref='input' hidden type='checkbox' :checked='curChecked' :value='value' @change='changeInput(item,$event)')
+  input(ref='input' hidden type='checkbox' :checked='curChecked' :value='value' @change='changeInput($event)')
 
 </template>
 <script>
@@ -62,7 +62,7 @@ export default {
   },
 
   methods: {
-    changeInput(item, $event) {
+    changeInput($event) {
       let { checked } = $event.target;
       // 看下选中的值在数组中的索引，这里不用原生的value，因为$event.target.value始终是字符串类型
       let index = this.selectedList.indexOf(this.value);
@@ -70,7 +70,7 @@ export default {
       checked
         ? this.selectedList.push(this.value)
         : index !== -1 && this.selectedList.splice(index, 1);
-      this.$emit("change", this.selectedList, item, $event);
+      this.$emit("change", this.selectedList, $event);
     }
   }
 };

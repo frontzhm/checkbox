@@ -3,7 +3,7 @@ div
   h2 boolean
   div
     div {{checked}}
-    checkbox-boolean(v-model='checked' :item='item')
+    checkbox-boolean(v-model='checked' :item='item' @change='change1')
   h2 array
   div
     div {{selectedCodes}}
@@ -43,10 +43,13 @@ export default {
     };
   },
   methods: {
-    changeItem(checked, item, $event) {
-      console.log(1234, checked, $event.target, item);
+    changeItem(checked, $event) {
+      console.log(1234, checked, $event.target);
     },
     change($event) {
+      console.log(123, $event);
+    },
+    change1($event) {
       console.log(123, $event);
     }
   }
