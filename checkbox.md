@@ -4,10 +4,10 @@ tags: js
 categories: js
 ---
 
-项目中，原始使用checkbox的话，一般绑定v-model就行，但是，如果想实现类似微信从通讯录选中好友来建群的效果，如下图，加上可以组里面再选择，就需要将v-model拆解成checked和change事件，然后封装单项组件。
+项目中，原始使用 checkbox 的话，一般绑定 v-model 就行，但是，如果想实现类似微信从通讯录选中好友来建群的效果，如下图，加上可以组里面再选择，就需要将 v-model 拆解成 checked 和 change 事件，然后封装单项组件。
 ![通讯录](https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/contact.jpeg)
 
-v-model可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装之后可以这样使用：
+v-model 可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装之后可以这样使用：
 
 ```pug
 //- item是内容区的相关信息，比如头像 昵称 uid
@@ -18,9 +18,11 @@ checkboxEnhanced(v-for="(item,index) in list" v-model='arr'  :value='item.code')
 
 ```
 
+[查看使用案例](https://frontzhm.github.io/checkbox/dist/index.html#/)
 
+> [项目的github](https://github.com/frontzhm/checkbox)
 
-## v-mode是boolean的时候
+## v-mode 是 boolean 的时候
 
 ```vue
 <!-- checkboxBoolean.vue -->
@@ -61,28 +63,28 @@ export default {
   name: "checkbox-boolean",
   model: {
     prop: "checked",
-    event: "change"
+    event: "change",
   },
   props: {
     item: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     checked: {
       type: Boolean,
       required: true,
       default() {
         return false;
-      }
+      },
     },
     value: {
       // type: [Boolean, String, Number],
       default() {
         return this.item;
-      }
-    }
+      },
+    },
   },
 
   methods: {
@@ -90,8 +92,8 @@ export default {
       // 第一项就将是否选中扔出去，这里注意，扔出去之后，父组件用v-model的话，父组件的值会自动变化
       // v-model是个语法糖，本质上相当于父组件 checkbox-item(:checked='checked' @change='checked=$event')
       this.$emit("change", $event.target.checked, $event);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -134,10 +136,9 @@ export default {
   font-size: 30px;
 }
 </style>
-
 ```
 
-## v-model是Array的时候
+## v-model 是 Array 的时候
 
 ```vue
 <!-- checkboxArray.vue -->
@@ -170,26 +171,26 @@ export default {
   name: "checkbox-array",
   model: {
     prop: "checked",
-    event: "change"
+    event: "change",
   },
   props: {
     item: {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     checked: {
       required: true,
       default() {
         return [];
-      }
+      },
     },
     value: {
       default() {
         return this.item;
-      }
-    }
+      },
+    },
   },
   computed: {
     selectedList: {
@@ -198,11 +199,11 @@ export default {
       },
       set() {
         console.log();
-      }
+      },
     },
     curChecked() {
       return this.checked.includes(this.value);
-    }
+    },
   },
 
   methods: {
@@ -215,8 +216,8 @@ export default {
         ? this.selectedList.push(this.value)
         : index !== -1 && this.selectedList.splice(index, 1);
       this.$emit("change", this.selectedList, $event);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -259,12 +260,11 @@ export default {
   font-size: 30px;
 }
 </style>
-
 ```
 
 ## 将两种情况合并
 
-这里简单使用component组件。[vue官网介绍](https://cn.vuejs.org/v2/guide/components-dynamic-async.html)
+这里简单使用 component 组件。[vue 官网介绍](https://cn.vuejs.org/v2/guide/components-dynamic-async.html)
 
 ```vue
 <template lang="pug">
@@ -283,25 +283,23 @@ export default {
   name: "checkbox-enhanced",
   components: {
     CheckboxArray,
-    CheckboxBoolean
+    CheckboxBoolean,
   },
   model: {
     prop: "checked",
-    event: "change"
+    event: "change",
   },
   created() {
     this.isArray = Array.isArray(this.$attrs.checked);
   },
   data() {
     return {
-      isArray: false
+      isArray: false,
     };
-  }
+  },
 };
 </script>
-
 ```
-
 
 ## 综合使用
 
@@ -326,7 +324,7 @@ div
       br
       div {{group.name}}
       checkbox-enhanced(v-for='(item,idx) in group.children' :key='idx' v-model='selectedCodes'  :item='item' :value='item.code'  @change='changeItem')
-      
+
 </template>
 
 <script>
