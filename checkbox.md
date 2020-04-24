@@ -7,12 +7,12 @@ categories: js
 项目中，原始使用checkbox的话，一般绑定v-model就行，但是，如果想实现类似微信从通讯录选中好友来建群的效果，如下图，加上可以组里面再选择，就需要将v-model拆解成checked和change事件，然后封装单项组件。
 ![通讯录](https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/contact.jpeg)
 
-v-model可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装之后希望能这样使用：
+v-model可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装之后可以这样使用：
 
 ```pug
 //- item是内容区的相关信息，比如头像 昵称 uid
 //- 1 boolean类型的时候，通常用于全选 组选的情况
-checkboxEnhanced(v-model='bool' :item='item')
+checkboxEnhanced(v-model='bool') 同意协议
 //- 2 array类型的时候，这时候可以循环
 checkboxEnhanced(v-model='arr' :item='item1' :value='item1.code')
 checkboxEnhanced(v-model='arr' :item='item2' :value='item2.code')
@@ -30,10 +30,12 @@ div.checkbox-box
     div.icon-box
       img.icon(alt='' :src='checked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
     div.content
-      //- 这里可以根据自己的项目灵活改变
-      div.avatar-box
-        img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
-      .name {{item.name}}
+      //- slot可以自定义后面的内容
+      slot
+        //- 这里可以根据自己的项目灵活改变
+        div.avatar-box
+          img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
+        .name {{item.name}}
   //- 原始input隐藏，这里的value看情况使用，可以不传，change是将选择事件抛出去，让父组件知晓
   input(ref='input' hidden type='checkbox' :checked='checked' :value='value' @change='changeInput($event)')
 
@@ -75,9 +77,9 @@ export default {
       }
     },
     value: {
-      type: [Boolean, String, Number],
+      // type: [Boolean, String, Number],
       default() {
-        return "";
+        return this.item;
       }
     }
   },
@@ -137,6 +139,7 @@ export default {
 ## v-model是Array的时候
 
 ```vue
+<!-- checkboxArray.vue -->
 <template lang="pug">
 div.checkbox-box
   div.checkbox-content-box(@click='$refs.input.click()')
@@ -144,10 +147,12 @@ div.checkbox-box
     div.icon-box
       img.icon(alt='' :src='curChecked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
     div.content
-      //- 这里可以灵活改变
-      div.avatar-box
-        img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
-      .name {{item.name}}
+      //- slot可以自定义后面的内容
+      slot
+        //- 这里可以灵活改变
+        div.avatar-box
+          img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
+        .name {{item.name}}
   //- 原始input隐藏，这里的value看情况使用，可以不传，change是将选择事件抛出去，让父组件知晓
   input(ref='input' hidden type='checkbox' :checked='curChecked' :value='value' @change='changeInput($event)')
 
@@ -180,9 +185,8 @@ export default {
       }
     },
     value: {
-      type: [Boolean, String, Number],
       default() {
-        return "";
+        return this.item;
       }
     }
   },
@@ -264,8 +268,11 @@ export default {
 ```vue
 <template lang="pug">
 div
-  component(v-if="isBoolean" is='CheckboxBoolean' v-bind='$attrs' v-on='$listeners')
+  component(v-if="!isArray" is='CheckboxBoolean' v-bind='$attrs' v-on='$listeners')
+    //- 自定义后面的内容
+    slot
   component(v-else is='CheckboxArray' v-bind='$attrs' v-on='$listeners')
+    slot
 </template>
 <script>
 import CheckboxBoolean from "@/components/CheckboxBoolean";
@@ -282,11 +289,11 @@ export default {
     event: "change"
   },
   created() {
-    this.isBoolean = typeof this.$attrs.checked === "boolean";
+    this.isArray = Array.isArray(this.$attrs.checked);
   },
   data() {
     return {
-      isBoolean: false
+      isArray: false
     };
   }
 };

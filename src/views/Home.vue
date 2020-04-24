@@ -8,6 +8,10 @@ div
   div
     div {{selectedCodes}}
     checkbox-enhanced(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem')
+  h2 array 自定义传入的内容
+  div
+    div {{selectedCodes}}
+    checkbox-enhanced(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :value='item.code' @change='changeItem') {{item.name}}
   h3 group
     section(v-for='(group,index) in groups' :key='index')
       br
