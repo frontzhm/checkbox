@@ -1,3 +1,4 @@
+<!-- checkboxItem.vue -->
 <template lang="pug">
 div.checkbox-box
   div.checkbox-content-box(@click='clickContent')
@@ -5,7 +6,7 @@ div.checkbox-box
     div.icon-box
       img.icon(alt='' :src='checked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
     div.content
-      //- 这里可以灵活改变
+      //- 这里可以根据自己的项目灵活改变
       div.avatar-box
         img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
       .name {{item.name}}
@@ -22,7 +23,7 @@ div.checkbox-box
  - change事件会改变元素的checked属性，再向父组件派发事件，父组件根据传递的值更新组件的checked
  - 组件的checked再决定显示选中或者不选中的图标
  - 特别注意，表单元素本身的checked属性变化和组件的checked属性不一样，别弄混淆。希望两者关联，是需要做处理的！
- - 这里为了方便您父组件使用v-model，将model设置为change事件和checked，官网文档https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
+ - 这里为了方便父组件使用v-model，将model设置为change事件和checked，官网文档https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model
 
 
 使用的时候如果只需要checked的话
@@ -73,6 +74,8 @@ export default {
       this.$refs.input.click();
     },
     changeInput(item, $event) {
+      // 第一项就将是否选中扔出去，这里注意，扔出去之后，父组件用v-model的话，父组件的值会自动变化
+      // v-model是个语法糖，本质上相当于父组件 checkbox-item(:checked='checked' @change='checked=$event')
       this.$emit("change", $event.target.checked, item, $event);
     }
   }

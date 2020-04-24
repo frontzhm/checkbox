@@ -1,24 +1,19 @@
 <template lang="pug">
 div
-  checkbox-item2(v-model='checked' :item='item')
-  div
-    //- checkbox-list(:items='items' v-model='selectedCodes' @input='hi')
-  //- div {{arr}}
+  h2 boolean
+  div {{checked}}
+  checkbox-boolean(v-model='checked' :item='item')
   div {{selectedCodes}}
-    //- checkbox-item(v-model='checked' :item='item' :value='item.code' @change='changeItem')
-    //- checkbox-item(v-model='checked1' :item='item1' :value='item.code' @change='changeItem')
-    checkbox-item2(v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem')
-    checkbox-item2(v-model='selectedCodes' :item='item1' :value='item1.code' @change='changeItem')
-    //- label 111
-    //-   input(@change='change($event)' type='checkbox' value='1')
-    //- label 222
-    //-   input(@change='change($event)' type='checkbox' value='2')
+    checkbox-array(v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem' key='1')
+    checkbox-array(v-model='selectedCodes' :item='item1' :value='item1.code' @change='changeItem' key='2')
 
 </template>
 
 <script>
 // @ is an alias to /src
 import CheckboxItem2 from "@/components/CheckboxItem2.vue";
+import CheckboxBoolean from "@/components/CheckboxBoolean.vue";
+import CheckboxArray from "@/components/CheckboxArray.vue";
 import CheckboxItem from "@/components/CheckboxItem.vue";
 import CheckboxList from "@/components/CheckboxList.vue";
 
@@ -27,7 +22,9 @@ export default {
   components: {
     CheckboxItem,
     CheckboxItem2,
-    CheckboxList
+    CheckboxList,
+    CheckboxBoolean,
+    CheckboxArray
   },
   data() {
     return {
@@ -51,26 +48,26 @@ export default {
   },
   methods: {
     changeItem(checked, item, $event) {
-      console.log($event.target, item);
-      let { value } = $event.target;
-      console.log(checked, value);
-      if (checked) {
-        this.arr.push(value);
-      } else {
-        let index = this.arr.indexOf(value);
-        index !== -1 && this.arr.splice(index, 1);
-      }
+      console.log(1234, checked, $event.target, item);
+      // let { value } = $event.target;
+      // console.log(checked, value);
+      // if (checked) {
+      //   this.arr.push(value);
+      // } else {
+      //   let index = this.arr.indexOf(value);
+      //   index !== -1 && this.arr.splice(index, 1);
+      // }
     },
     change($event) {
-      console.log($event);
-      let checkbox = $event.target;
-      console.log(checkbox);
-      if (checkbox.checked) {
-        this.arr.push(checkbox.value);
-      } else {
-        let index = this.arr.indexOf(checkbox.value);
-        index !== -1 && this.arr.splice(index, 1);
-      }
+      console.log(123, $event);
+      // let checkbox = $event.target;
+      // console.log(checkbox);
+      // if (checkbox.checked) {
+      //   this.arr.push(checkbox.value);
+      // } else {
+      //   let index = this.arr.indexOf(checkbox.value);
+      //   index !== -1 && this.arr.splice(index, 1);
+      // }
     },
     hi(valueCopy, item, event) {
       console.log(valueCopy, item, event);

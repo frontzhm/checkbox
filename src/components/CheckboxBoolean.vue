@@ -1,32 +1,7 @@
----
-title: 拆解checkbox的v-model
-tags: js
-categories: js
----
-
-项目中，原始使用checkbox的话，一般绑定v-model就行，但是，如果想实现类似微信从通讯录选中好友来建群的效果，如下图，加上可以组里面再选择，就需要将v-model拆解成checked和change事件，然后封装单项组件。
-
-v-model可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装之后希望能这样使用：
-
-```js
-// item是内容区的相关信息，比如头像 昵称 uid
-// 1 这种用于全选 组选的情况
-checkboxItem(v-model='bool' :item='item')
-// 2
-checkboxItem(v-model='arr' :item='item1' :value='item1.uid')
-checkboxItem(v-model='arr' :item='item2' :value='item2.uid')
-
-```
-
-![通讯录](https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/contact.jpeg)
-
-## v-mode是boolean的时候
-
-```vue
 <!-- checkboxItem.vue -->
 <template lang="pug">
 div.checkbox-box
-  div.checkbox-content-box(@click='clickContent')
+  div.checkbox-content-box(@click='$refs.input.click()')
     //- 自定义选中图标
     div.icon-box
       img.icon(alt='' :src='checked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
@@ -64,7 +39,7 @@ methods: {
 }
  */
 export default {
-  name: "checkbox-item",
+  name: "checkbox-boolean",
   model: {
     prop: "checked",
     event: "change"
@@ -90,14 +65,8 @@ export default {
       }
     }
   },
-  data() {
-    return {};
-  },
 
   methods: {
-    clickContent() {
-      this.$refs.input.click();
-    },
     changeInput(item, $event) {
       // 第一项就将是否选中扔出去，这里注意，扔出去之后，父组件用v-model的话，父组件的值会自动变化
       // v-model是个语法糖，本质上相当于父组件 checkbox-item(:checked='checked' @change='checked=$event')
@@ -146,11 +115,3 @@ export default {
   font-size: 30px;
 }
 </style>
-
-```
-
-## 多项封装
-
-通讯录是很多人，这里可以再封装下列表。这样，使用群组选择的时候，也很便捷。
-
-
