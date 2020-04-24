@@ -19,6 +19,7 @@ div.checkbox-box
   当前组件的初始状态curChecked是，看数组里有没有当前value，有就是选中，没有就不选中
   数组是引用类型，为了不改变父组件的值，这里使用selectedList复制一份checked
   当checkbox有change事件的时候，选中就将value值push到selectedList，否则删掉，然后将selectedList抛给父组件
+  !!! 注意这里使用computed,以为别的复选框选择的时候，selectedList也会跟着变化
  */
 export default {
   name: "checkbox-array",
