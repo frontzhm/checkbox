@@ -3,32 +3,26 @@ div
   h2 boolean
   div
     div {{checked}}
-    checkbox-boolean(v-model='checked' :item='item' @change='change1')
+    checkbox-enhanced(v-model='checked'  :item='item' @change='change')
   h2 array
   div
     div {{selectedCodes}}
-    checkbox-array(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem' )
-  h2 通用--array
-  div
-    div {{selectedCodes}}
     checkbox-enhanced(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem')
-  h2 通用--boolean
-  div
-    div {{checked}}
-    checkbox-enhanced(v-model='checked'  :item='item' @change='change')
+  h3 group
+    section(v-for='(group,index) in groups' :key='index')
+      checkbox-enhanced(v-model='group.checked'  :item='group' @change='change')
+        div 1
+      checkbox-enhanced(v-for='(item,idx) in group.children' :key='idx' v-model='selectedCodes'  :item='item' :value='item.code')
+      
 </template>
 
 <script>
 // @ is an alias to /src
-import CheckboxBoolean from "@/components/CheckboxBoolean.vue";
-import CheckboxArray from "@/components/CheckboxArray.vue";
 import CheckboxEnhanced from "@/components/CheckboxEnhanced.vue";
 
 export default {
   name: "Home",
   components: {
-    CheckboxBoolean,
-    CheckboxArray,
     CheckboxEnhanced
   },
   data() {
@@ -39,18 +33,25 @@ export default {
         { code: 2, name: "huahua2" }
       ],
       selectedCodes: [],
-      checked: true
+      checked: true,
+      groups: [
+        {
+          name: "a",
+          children: [{ code: 3, name: "huahua3" }]
+        },
+        {
+          name: "b",
+          children: [{ code: 4, name: "huahua4" }]
+        }
+      ]
     };
   },
   methods: {
-    changeItem(checked, $event) {
-      console.log(1234, checked, $event.target);
+    changeItem() {
+      console.log(arguments);
     },
-    change($event) {
-      console.log(123, $event);
-    },
-    change1($event) {
-      console.log(123, $event);
+    change() {
+      console.log(arguments);
     }
   }
 };

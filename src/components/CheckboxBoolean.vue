@@ -6,6 +6,7 @@ div.checkbox-box
     div.icon-box
       img.icon(alt='' :src='checked?"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_selected.png":"https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/icon_not_selected.png"')
     div.content
+      slot
       //- 这里可以根据自己的项目灵活改变
       div.avatar-box
         img.img-avatar(alt='' :src='item.avatar || " https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/default_avatar.png"')
@@ -51,9 +52,9 @@ export default {
       }
     },
     value: {
-      type: [Boolean, String, Number],
+      // type: [Boolean, String, Number],
       default() {
-        return "";
+        return this.item;
       }
     }
   },

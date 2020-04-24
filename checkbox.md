@@ -19,8 +19,6 @@ checkboxEnhanced(v-model='arr' :item='item2' :value='item2.code')
 
 ```
 
-
-
 ## v-mode是boolean的时候
 
 ```vue

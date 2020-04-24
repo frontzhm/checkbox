@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  component(v-if="isBoolean" is='CheckboxBoolean' v-bind='$attrs' v-on='$listeners')
+  component(v-if="!isArray" is='CheckboxBoolean' v-bind='$attrs' v-on='$listeners')
   component(v-else is='CheckboxArray' v-bind='$attrs' v-on='$listeners')
 </template>
 <script>
@@ -18,11 +18,11 @@ export default {
     event: "change"
   },
   created() {
-    this.isBoolean = typeof this.$attrs.checked === "boolean";
+    this.isArray = Array.isArray(this.$attrs.checked);
   },
   data() {
     return {
-      isBoolean: false
+      isArray: false
     };
   }
 };
