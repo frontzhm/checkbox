@@ -14,10 +14,11 @@ v-model可以绑定两种类型的值，`Boolean`和`Array`。所以组件封装
 //- 1 boolean类型的时候，通常用于全选 组选的情况
 checkboxEnhanced(v-model='bool') 同意协议
 //- 2 array类型的时候，这时候可以循环
-checkboxEnhanced(v-model='arr' :item='item1' :value='item1.code')
-checkboxEnhanced(v-model='arr' :item='item2' :value='item2.code')
+checkboxEnhanced(v-for="(item,index) in list" v-model='arr'  :value='item.code') {{item.name}}
 
 ```
+
+
 
 ## v-mode是boolean的时候
 
@@ -295,6 +296,81 @@ export default {
     return {
       isArray: false
     };
+  }
+};
+</script>
+
+```
+
+
+## 综合使用
+
+```pug
+//- Home.vue
+<template lang="pug">
+div
+  h2 boolean
+  div
+    div {{checked}}
+    checkbox-enhanced(v-model='checked' @change='change') 同意协议
+  h2 array
+  div
+    div {{selectedCodes}}
+    checkbox-enhanced(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :item='item' :value='item.code' @change='changeItem')
+  h2 array 自定义传入的内容
+  div
+    div {{selectedCodes}}
+    checkbox-enhanced(v-for='(item,index) in items' :key='index' v-model='selectedCodes' :value='item.code' @change='changeItem') {{item.name}}
+  h3 group
+    section(v-for='(group,index) in groups' :key='index')
+      br
+      div {{group.name}}
+      checkbox-enhanced(v-for='(item,idx) in group.children' :key='idx' v-model='selectedCodes'  :item='item' :value='item.code'  @change='changeItem')
+      
+</template>
+
+<script>
+// @ is an alias to /src
+import CheckboxEnhanced from "@/components/CheckboxEnhanced.vue";
+
+export default {
+  name: "Home",
+  components: {
+    CheckboxEnhanced
+  },
+  data() {
+    return {
+      item: { code: 6, name: "组" },
+      items: [
+        { code: 1, name: "huahua" },
+        { code: 2, name: "huahua2" }
+      ],
+      selectedCodes: [],
+      checked: true,
+      groups: [
+        {
+          name: "a组的成员",
+          children: [{ code: 3, name: "huahua3" }]
+        },
+        {
+          name: "b组的成员",
+          children: [{ code: 4, name: "huahua4" }]
+        }
+      ]
+    };
+  },
+  watch: {
+    groups(newVal) {
+      console.log(newVal);
+    }
+  },
+  methods: {
+    changeItem() {
+      console.log(arguments);
+    },
+    change(group) {
+      console.log(group);
+    }
   }
 };
 </script>
