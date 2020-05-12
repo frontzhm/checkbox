@@ -19,7 +19,7 @@ export default {
     let renderFn = createElement => {
       return [
         createElement(
-          "h1",
+          "p",
           {
             slot: "other"
           },

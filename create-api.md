@@ -8,6 +8,7 @@ create-api是黄轶老师写的，[github地址](https://github.com/cube-ui/vue-
 插件的意思是说，让某个组件以api的方式，能动态插入到body的下面，很像弹出层。  
 我个人目前觉得，弹出全局页面非常适合。  
 这边是使用的初级版。  
+以下案例的[源码地址](https://github.com/frontzhm/checkbox)  
 
 1. 安装：  
 
