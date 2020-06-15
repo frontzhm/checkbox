@@ -13,9 +13,6 @@ export default {
     return {
       content:''
     }
-  },
-  methods: {
-
   }
 }
 </script>
