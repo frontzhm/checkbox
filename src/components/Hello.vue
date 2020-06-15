@@ -1,6 +1,7 @@
 <template>
-  <div class="box" @click="clickHandler">
+  <div class="box">
     {{ content }}
+    <div @click="clickHandler">取消</div>
     <slot name="other"></slot>
   </div>
 </template>
@@ -13,6 +14,11 @@ export default {
       type: String,
       default: 'Hello'
     }
+  },
+  data(){
+      return {
+
+      }
   },
   methods: {
     clickHandler(e) {

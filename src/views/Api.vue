@@ -13,7 +13,6 @@ Vue.use(CreateAPI);
 
 // create this.$createHello API
 Vue.createAPI(Hello, true);
-// Hello.$create(config, renderFn);
 export default {
   created() {
     // 这边因为create只创建一次实例，之后需要自己remove然后再出现
@@ -25,6 +24,7 @@ export default {
       this.showHello();
     },
     hideHello() {
+      // 移除
       this.instanceHello && this.instanceHello.remove();
     },
     showHello() {
@@ -39,13 +39,14 @@ export default {
           )
         ];
       };
-      this.instanceHello && this.instanceHello.remove();
+      this.hideHello();
       this.instanceHello = this.$createHello(
         {
           $props: {
             content: "I am from a vue component"
           },
           $events: {
+            // 弹出层想消失的话 调用这里的hide
             click1: this.hideHello
           }
         },
