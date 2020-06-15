@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     {{ content }}
-    <div @click="clickHandler">取消</div>
+    <div @click="hidePage">取消</div>
     <slot name="other"></slot>
   </div>
 </template>
@@ -21,8 +21,8 @@ export default {
       }
   },
   methods: {
-    clickHandler(e) {
-      this.$emit('click1', e)
+    hidePage(e) {
+      this.$emit('hidePage', e)
     }
   }
 }
@@ -35,6 +35,7 @@ export default {
   top: 0;
   bottom: 0;
   z-index: 2;
-  background-color: #fff;
+  /* 这里fixed布局全屏覆盖，之后设置背景色，这样就完全看不到下面图层的样式 */
+  background-color: #69f;
 }
 </style>
