@@ -11,7 +11,7 @@ export default {
   components:{Editor},
   data(){
     return {
-      content:''
+      content:'<p>111</p>'
     }
   }
 }
