@@ -5,21 +5,25 @@ module.exports = {
       //   rootValue: 32,
       propList: ["*"],
       // selectorBlackList: ["van-", "cube-", "arrow", "px-"]
-      minPixelValue: 1
+      minPixelValue: 1,
+      // 失效！！！回头再查这个是@media里面的px会不会转成rem,true就是会，false就是不会
+      mediaQuery: false,
+      // 失效！！！
+      exclude: /src\/components\/FileItem\.vue/
     }
   }
 };
+/* pxtorem-disable-next-line */
 /**
- * rootValue: 75,
-  unitPrecision: 5,
-  propList: ['*'],
-  selectorBlackList: [],
-  replace: true,
-  mediaQuery: false,
-  minPixelValue: 12
-
-作者：Cryptolalia
-链接：https://juejin.im/post/5cd5214851882544327a2d79
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ * 
+ * https://github.com/cuth/postcss-pxtorem/
+    rootValue: 16,
+    unitPrecision: 5,
+    propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
+    selectorBlackList: [],
+    replace: true,
+    mediaQuery: false,
+    minPixelValue: 0,
+    exclude: /node_modules/i
+}
  */

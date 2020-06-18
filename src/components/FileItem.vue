@@ -102,41 +102,52 @@ export default {
 };
 </script>
 <style scoped>
+h1,
+h2,
+h3 {
+  padding: 0;
+  margin: 0;
+}
+/* prettier-ignore */
 .file-item {
   background-color: #f0f1f1;
-  padding: 13px 10px;
+  padding: 13PX 10PX;
   display: flex;
   position: relative;
-  width: 260px;
+  width: 260PX;
 }
-
+/* prettier-ignore */
 .icon-file {
-  width: 26px;
-  height: 34px;
+  width: 26PX;
+  height: 34PX;
 }
+/* prettier-ignore */
 .file-item-right {
-  margin-left: 10px;
+  margin-left: 10PX;
 }
-
+/* prettier-ignore */
 .file-name {
-  font-size: 14px;
+  font-size: 14PX;
   color: #222;
 }
+/* prettier-ignore */
 .file-other {
-  margin-top: 1px;
+  margin-top: 1PX;
   color: #999;
-  font-size: 12px;
+  font-size: 12PX;
 }
+/* prettier-ignore */
 .file-upload-status {
-  margin-left: 5px;
+  margin-left: 5PX;
 }
-
+/* prettier-ignore */
 .icon-delete {
   position: absolute;
-  width: 24px;
-  height: 24px;
+  width: 24PX;
+  height: 24PX;
   right: 0;
   top: 0;
   z-index: 2;
 }
+/* PXtorem-disable-next-line */
 </style>
