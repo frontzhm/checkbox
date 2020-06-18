@@ -90,13 +90,7 @@ export default {
       this.$emit("delFile");
     },
     clickFile() {
-      // this.$emit('downloadFile')
-      // 两种方式选一个
-      // this.$utils.openDownloadDialog(file.url, file.name)
-      this.$api.teacherTask.AjaxDownLoadFile({
-        fileName: this.file.name,
-        fileFullPath: this.file.fullPath
-      });
+      window.open(this.file.url);
     }
   }
 };

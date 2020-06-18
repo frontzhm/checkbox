@@ -7,8 +7,9 @@ div
         img(@click='$refs.inputFile.click()' src='https://blog-huahua.oss-cn-beijing.aliyuncs.com/blog/code/file_icon.png' alt='')
         //- 实际的input,click事件是解决同一个文件上传两次无效的问题，因为文件可以被删除，所以这里加上这样的事件
         input(ref='inputFile' hidden  type='file' multiple accept='.docx,.pptx,.xlsx,.pdf' @click='$event.target.value = null'  @change='uploadFile')
-    //- 编辑区域
-    div.editor-text(ref='editorText')
+    //- 编辑区域 编辑区一般设置最大高度，超过这个高度的时候就内部滚动条，所以用容器包裹编辑区，且内外容器设置高度
+    div.editor-text-wrap
+      div.editor-text(ref='editorText')
     //- 附件区域
     ul.file-list(v-if='editorFiles.length')
       li.file-item(v-for='(item,index) in editorFiles' :key='index' is='file-item' :file='item'  @delFile='delFile(index)')
@@ -31,9 +32,9 @@ export default {
     },
     // files，在有附件的时候可以传过来
     files: {
-      type: String,
+      type: Array,
       default() {
-        return "";
+        return [];
       }
     }
   },
@@ -45,11 +46,22 @@ export default {
       editorFiles: []
     };
   },
+  // 这里直接监控同步数据，当然也可以用store
+  watch: {
+    editorContent(newValue) {
+      this.$emit("update:content", newValue);
+    },
+    editorFiles(newValue) {
+      this.$emit("update:files", newValue);
+    }
+  },
   mounted() {
     // 将content赋值，editorContent变化的时候，不改变父组件的content
     this.editorContent = this.content;
-    // 拷贝
-    this.editorFiles = [...this.files];
+    // 拷贝，注意设置上传状态 name: file.name, size: file.size, isUploaded: false, url: ""
+    let files = [...this.files];
+    files.length && files.forEach(item => (item.isUploaded = true));
+    this.editorFiles = [...files];
     // 创建编辑器
     this.createEditor();
     // 设置内容
@@ -71,15 +83,12 @@ export default {
         url: ""
       };
       this.editorFiles.push(this.curFile);
-      this.$emit("changeFiles", this.editorFiles);
-      // 上传
+      // 上传,上传成功之后设置状态和下载地址
       // let res = await this._uploadSingleFile(file)
       this.curFile.isUploaded = true;
-      // this.curFile.url = this.$utils.joinUrl(res.fullpath, { fileName: file.name, fileSize: file.size })
-      this.$emit("changeFiles", this.editorFiles);
-      console.log(2222, this.editorFiles);
+      this.curFile.url = "服务器返回的地址";
     },
-
+    // 删除文件的时候
     delFile(index) {
       this.editorFiles.splice(index, 1);
     },
@@ -97,10 +106,9 @@ export default {
       editor.create();
     },
     _syncContent() {
-      // 设置在create之前，当内容变化的时候，将内容扔出去，同步父组件的content
+      // 设置在create之前，当内容变化的时候，同步editorContent
       this.editor.customConfig.onchange = html => {
         this.editorContent = html;
-        this.$emit("update:content", html);
       };
     },
     _setInitContent(content) {
@@ -165,8 +173,13 @@ export default {
   display: block;
 }
 /* 文本区 */
+.editor-text-wrap {
+  height: 600px;
+  margin-top: -1px;
+}
 .editor-text {
   border: 1px solid #eee;
+  height: 100%;
 }
 /* 文件区 */
 .file-list {
