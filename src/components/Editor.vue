@@ -132,7 +132,7 @@ export default {
         url: "/xx/yy",
         method: "POST",
         data: { sign: "xxx", file },
-        // 转化成formData形式
+        // 上传文件需要参数转化成formData形式
         transformRequest: [
           function(data) {
             let formData = new FormData();
