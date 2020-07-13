@@ -18,19 +18,19 @@
     - 密码长度不能少于 6 位。
     - 手机号码必须符合格式。
     */
-      var strate = {
+      var strategies = {
         isEmpty(value, msg) {
           if (value === "") {
             return msg;
           }
         },
-        minLength(value, length, msg) {
+        minLength(value, msg, length) {
           if (value.length < length) {
             return msg;
           }
         },
-        isPhoneNumber(value, msg) {
-          if (/[0-9]{11,11}/.test(value)) {
+        isMobile(value, msg) {
+          if (!/[0-9]{11,11}/.test(value)) {
             return msg;
           }
         }
@@ -38,21 +38,30 @@
 
       let form = document.querySelector("#registerForm");
       form.onsubmit = () => {
-        let msg = strate.isEmpty(form.userName.value, "用户名不能为空")
+        let msg = strategies.isEmpty(form.userName.value, "用户名不能为空");
         if (msg) {
           alert(msg);
           return false;
         }
-        let msg2 = strate.minLength(form.password.value, 6,"密码不能少于6位")
-        if (msg) {
-          alert(msg);
+        let msg2 = strategies.minLength(
+          form.password.value,
+          "密码不能少于6位",
+          6
+        );
+        if (msg2) {
+          alert(msg2);
           return false;
         }
-        let msg3 = strate.isPhoneNumber(form.phoneNumber.value,"手机号码格式不正确")
-        if (msg) {
-          alert(msg);
+        let msg3 = strategies.isMobile(
+          form.phoneNumber.value,
+          "手机号码格式不正确"
+        );
+        if (msg3) {
+          alert(msg3);
           return false;
         }
+        alert('ok')
+        return false
       };
     </script>
   </body>

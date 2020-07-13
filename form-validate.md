@@ -38,7 +38,7 @@ form.onsubmit = () => {
     alert("密码不能少于6位");
     return false;
   }
-  if (/[0-9]{11,11}/.test(form.phoneNumber.value)) {
+  if (!/[0-9]{11,11}/.test(form.phoneNumber.value)) {
     alert("手机号码格式不正确");
     return false;
   }
