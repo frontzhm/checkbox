@@ -83,7 +83,8 @@ var strategies = {
   }
 };
 // 算法的使用
-submitBtn.onclick = function() {
+let form = document.querySelector("#registerForm");
+form.onsubmit = function() {
   var errorMsg = "用户名不能为空";
   if ((strategies.isNonEmpty(registerForm.userName.value), errorMsg)) {
     alert(errorMsg);
@@ -105,9 +106,93 @@ submitBtn.onclick = function() {
 
 写完之后，我屮艸芔茻！！！这好像和第一版也没什么大的区别。看起来一点也不优雅！！！
 
-别急别急，代码总是一点点改进的，我们再想想，是不是`if/if/if`的部分非常相似，先抽出来。
+但这里提供了关键性思路，提交部分明显就是重复，很容易想到列表循环，这里将其抽象成 validator 的类。
 
-好，再来！！
+也就是 validator 类提供 add 和 start,，add 负责将每种校验方式放进一个数组，start 负责遍历数组，一旦有返回值直接返回且终止返回。
+
+。。。我觉得有点难度，可以试试写写。
+
+## 改进版的表单校验 - v3
+
+```js
+var strategies = {
+  isNonEmpty(value, errorMsg) {
+    // 不为空
+    if (value === "") {
+      return errorMsg;
+    }
+  },
+  minLength(value, length, errorMsg) {
+    // 限制最小长度
+    if (value.length < length) {
+      return errorMsg;
+    }
+  },
+  isMobile(value, errorMsg) {
+    // 手机号码格式
+    if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
+      return errorMsg;
+    }
+  }
+};
+class Validator {
+  constructor() {
+    this.cache = [];
+  }
+  add(dom, rule, msg) {
+    // 把单个验证表单的fn存下来
+    let [strategy, length] = rule.split(":");
+    let params = length ? [dom.value, length, msg] : [dom.value, msg];
+    console.log(params);
+    let fn = () => {
+      return strategies[strategy](...params);
+    };
+    this.cache.push(fn);
+  }
+  start() {
+    for (var i = 0; i < this.cache.length; i++) {
+      let errMsg = this.cache[i]();
+      if (errMsg) {
+        return errMsg;
+      }
+    }
+  }
+}
+// 应用
+let form = document.querySelector("#registerForm");
+function validateData() {
+  let validator = new Validator();
+  validator.add(form.userName, "isNonEmpty", "用户名不能为空");
+  validator.add(form.password, "minLength:6", "密码不能少于6位");
+  validator.add(form.phoneNumber, "isMobile", "手机号码格式不正确");
+  // 需要加新的校验规则，直接添加这里就好
+  let errMsg = validator.start();
+  return errMsg;
+}
+// submit里面就很优雅了
+form.onsubmit = () => {
+  let errMsg = validateData();
+  if (errMsg) {
+    alert(errMsg);
+    return false;
+  }
+};
+
+```
+
+写完这些之后，其实。。。还有点缺点，比如用户名想同时验证其为空和长度的话，需要单个列出，显然又累赘了，接下来试着将其改成`validator.add(form.userName, {isNonEmpty:'用户名不能为空','minLength:6':'用户名长度不能少于6位'})`
+
+```js
+validator.add(form.userName, "isNonEmpty", "用户名不能为空");
+validator.add(form.userName, "minLength:6", "用户名长度不能少于6位");
+```
+
+## 改进版的表单校验 - v4
+
+
+
+
+
 
 ## 改进版的表单校验 - v3
 
