@@ -38,6 +38,11 @@ const routes = [
     path: "/edit",
     name: "Edit",
     component: () => import(/* webpackChunkName: "Edit" */ "../views/Edit.vue")
+  },
+  {
+    path: "/form",
+    name: "Form",
+    component: () => import(/* webpackChunkName: "Form" */ "../views/Form.vue")
   }
 ];
 
