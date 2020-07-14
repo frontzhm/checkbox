@@ -2,7 +2,7 @@
   <cm-swipe v-if="imgs.length" :imgs="imgs"></cm-swipe>
 </template>
 <script>
-import CmSwipe from "./CmSwipe";
+import CmSwipe from "@/components/CmSwipe";
 
 export default {
   name: "xx",
