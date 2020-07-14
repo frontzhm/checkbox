@@ -177,7 +177,6 @@ form.onsubmit = () => {
     return false;
   }
 };
-
 ```
 
 写完这些之后，其实。。。还有点缺点，比如用户名想同时验证其为空和长度的话，需要单个列出，显然又累赘了，接下来试着将其改成`validator.add(form.userName, {isNonEmpty:'用户名不能为空','minLength:6':'用户名长度不能少于6位'})`
@@ -189,11 +188,72 @@ validator.add(form.userName, "minLength:6", "用户名长度不能少于6位");
 
 ## 改进版的表单校验 - v4
 
+```js
+// var strategies = 。。。;
+class Validator {
+  constructor() {
+    this.cache = [];
+  }
+  // 没事原先的add提取出来
+  _handleRule(dom, rule, msg) {
+    // 把单个验证表单的fn存下来
+    let [strategy, length] = rule.split(":");
+    let params = length ? [dom.value, length, msg] : [dom.value, msg];
+    console.log(params);
+    let fn = () => {
+      return strategies[strategy](...params);
+    };
+    this.cache.push(fn);
+  }
+  add(dom, rules) {
+    rules.forEach(item => {
+      for (let rule in item) {
+        let msg = item[rule];
+        // 遍历的时候，直接使用就好
+        this._handleRule(dom, rule, msg);
+      }
+    });
+  }
+  start() {
+    for (var i = 0; i < this.cache.length; i++) {
+      let errMsg = this.cache[i]();
+      if (errMsg) {
+        return errMsg;
+      }
+    }
+  }
+}
+// 应用
+let form = document.querySelector("#registerForm");
 
+function validateData() {
+  let validator = new Validator();
+  validator.add(form.userName, [
+    { isNonEmpty: "用户名不能为空" },
+    { "minLength:6": "用户名不能少于6位" }
+  ]);
+  validator.add(form.password, [{ "minLength:6": "密码不能少于6位" }]);
+  validator.add(form.phoneNumber, [{ isMobile: "手机号码格式不正确" }]);
+  console.log(validator);
+  let errMsg = validator.start();
+  return errMsg;
+}
+form.onsubmit = () => {
+  let errMsg = validateData();
+  if (errMsg) {
+    alert(errMsg);
+    return false;
+  }
+};
+```
 
+完结，下次看表单验证的一些插件可能就能加深理解了！
 
+## 引用
 
+这里的案例是《JavaScript的设计模式与开发实践》里面的，写的非常好，强烈安利！！！
 
+<!-- 
 ## 改进版的表单校验 - v3
 
 ```js
@@ -338,4 +398,4 @@ submitBtn.onclick = function() {
   }
   // 这里开始ajax请求。。。
 };
-```
+``` -->

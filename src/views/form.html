@@ -14,10 +14,10 @@
     </form>
     <script>
       /*
-    - 用户名不能为空。
-    - 密码长度不能少于 6 位。
-    - 手机号码必须符合格式。
-    */
+          - 用户名不能为空。
+          - 密码长度不能少于 6 位。
+          - 手机号码必须符合格式。
+          */
       var strategies = {
         isNonEmpty(value, errorMsg) {
           // 不为空
@@ -42,7 +42,8 @@
         constructor() {
           this.cache = [];
         }
-        add(dom, rule, msg) {
+        // 没事原先的add提取出来
+        _handleRule(dom, rule, msg) {
           // 把单个验证表单的fn存下来
           let [strategy, length] = rule.split(":");
           let params = length ? [dom.value, length, msg] : [dom.value, msg];
@@ -51,6 +52,15 @@
             return strategies[strategy](...params);
           };
           this.cache.push(fn);
+        }
+        add(dom, rules) {
+          rules.forEach(item => {
+            for (let rule in item) {
+              let msg = item[rule];
+              // 遍历的时候，直接使用就好
+              this._handleRule(dom, rule, msg);
+            }
+          });
         }
         start() {
           for (var i = 0; i < this.cache.length; i++) {
@@ -66,9 +76,9 @@
 
       function validateData() {
         let validator = new Validator();
-        validator.add(form.userName, "isNonEmpty", "用户名不能为空");
-        validator.add(form.password, "minLength:6", "密码不能少于6位");
-        validator.add(form.phoneNumber, "isMobile", "手机号码格式不正确");
+        validator.add(form.userName, [{"isNonEmpty":"用户名不能为空"},{"minLength:6":"用户名不能少于6位"}]);
+        validator.add(form.password, [{"minLength:6": "密码不能少于6位"}]);
+        validator.add(form.phoneNumber, [{"isMobile": "手机号码格式不正确"}]);
         console.log(validator);
         let errMsg = validator.start();
         return errMsg;
