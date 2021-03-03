@@ -30,7 +30,7 @@
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-cli": "^1.0.0-alpha6",
     "pug-plain-loader": "^1.0.0",
     "postcss-pxtorem": "^4.0.1"
